@@ -14,6 +14,7 @@ RAGAS = [["mohanam","101010010100"],
          ["hindolam", "100101001010"],
          ["shuddha saveri", "101001010100"],
          ["shuddha dhanyasi", "100101010010" ] ]
+SWARAS = ["S", "R1", "R2", "G1", "G2", "M1", "M2", "P", "D1", "D2", "N1", "N2"]
 
 @app.route('/')
 def index():
@@ -39,17 +40,22 @@ def showTransposes():
   return jsonify(_formatted_transposes(shruthi, raga))
 
 def _formatted_transposes(shruthi, raga):
-  return dict(transposes = _find_transposes(shruthi, raga))
+  return dict(transposes = _find_transposes(shruthi, raga), 
+                          main_shruthi = shruthi, 
+                          main_raga = raga)
 
 def _find_transposes(shruthi, raga):
   #find raga code
   raga_code = next(r[1] for r in RAGAS if r[0] == raga)
-  
+  swara_iterator = deque(SWARAS)
   shruti_iterator = deque(SHRUTHIS)
   while shruthi != shruti_iterator[0]:
     shruti_iterator.rotate(1)
 
-  codes = [dict(shruthi = shruti_iterator[0], raga_code = raga_code)]
+  codes = [dict(shruthi = shruti_iterator[0], 
+                raga_code = raga_code,
+                swara_code = swara_iterator[0]
+                )]
 
   raga_iterator = deque(raga_code)
 
@@ -57,12 +63,15 @@ def _find_transposes(shruthi, raga):
   while condition:
       shruti_iterator.rotate(-1)
       raga_iterator.rotate(-1)      
+      swara_iterator.rotate(1)
       new_raga_code = "".join(raga_iterator)
       # loop body here
       condition = new_raga_code != raga_code
       if condition and raga_iterator[0] == "1":
-        codes.append(dict(shruthi = shruti_iterator[0], raga_code = new_raga_code )) 
-  
+        codes.append(dict(shruthi = shruti_iterator[0],
+                          raga_code = new_raga_code,
+                          swara_code = swara_iterator[0] 
+                          )) 
   for code in codes:
     code["raga"] = next(r[0] for r in RAGAS if r[1] == code["raga_code"])
   return codes

@@ -29,7 +29,8 @@
           <h2> Derived Transpose Patterns </h2>
          <ol>
               <li ng-repeat="item in combinations['transposes']">
-                  {{item.shruthi}} - {{item.raga}} 
+                  <strong>{{item.shruthi}} - {{item.raga}} </strong> 
+                  <span ng-if="item.shruthi != combinations.main_shruthi">(Use <strong>{{item.swara_code}}</strong> as Sa to get back to {{combinations.main_raga}} in {{combinations.main_shruthi}} Shruthi)</span> 
               </li>
           </ol>
         </div>
