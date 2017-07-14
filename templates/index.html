@@ -27,10 +27,14 @@
       <div >
         <div id= "swaras" class="notations" >
           <h2> Derived Transpose Patterns </h2>
+          <span> 
+          <h3> Legend </h3>
+          <img src="static/images/piano.jpeg" width="300px" height="100px"/>
+          </span>
          <ol>
               <li ng-repeat="item in combinations['transposes']">
                   <strong>{{item.shruthi}} - {{item.raga}} </strong> 
-                  <span ng-if="item.shruthi != combinations.main_shruthi">(Use <strong>{{item.swara_code}}</strong> as Sa to transition to {{combinations.main_raga}} in {{combinations.main_shruthi}} Shruthi)</span> 
+                  <span ng-if="item.shruthi != combinations.main_shruthi">(Use <strong>{{item.swara_code}}</strong> as Sa to transition cto {{combinations.main_raga}} in {{combinations.main_shruthi}} Shruthi)</span> 
               </li>
           </ol>
         </div>
