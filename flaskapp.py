@@ -14,7 +14,9 @@ RAGAS = [["mohanam","101010010100"],
          ["hindolam", "100101001010"],
          ["shuddha saveri", "101001010100"],
          ["shuddha dhanyasi", "100101010010" ] ]
-SWARAS = ["S", "R1", "R2", "G1", "G2", "M1", "M2", "P", "D1", "D2", "N1", "N2"]
+SWARAS = ["Sa", "Ri 1", "Ri 2", "Ga 1", "Ga 2", 
+          "Ma 1", "Ma 2", "Pa", "Dha 1", "Dha 2", 
+          "Ni 1", "Ni 2"]
 
 @app.route('/')
 def index():
