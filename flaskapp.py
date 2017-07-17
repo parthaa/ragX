@@ -11,9 +11,9 @@ app.config.from_pyfile('flaskapp.cfg')
 
 RAGAS = []
 SHRUTHIS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-SWARAS = ["Sa", "Ri 1", "Ri 2", "Ga 1", "Ga 2", 
-          "Ma 1", "Ma 2", "Pa", "Dha 1", "Dha 2", 
-          "Ni 1", "Ni 2"]
+SWARAS = ["Sa", "Ri1", "Ri2", "Ga1", "Ga2",
+          "Ma1", "Ma2", "Pa", "Dha1", "Dha2",
+          "Ni1", "Ni2"]
 
 @app.before_first_request
 def setupRagas():
@@ -46,9 +46,15 @@ def showTransposes():
   return jsonify(_formatted_transposes(shruthi, raga))
 
 def _formatted_transposes(shruthi, raga):
-  return dict(transposes = _find_transposes(shruthi, raga), 
-                          main_shruthi = shruthi, 
-                          main_raga = raga)
+  transposes = _find_transposes(shruthi, raga)
+  unknown_ragas = [item for item in transposes if item.has_key("unknown")]
+  known_ragas = [item for item in transposes if not item.has_key("unknown")]
+
+  return dict(transposes = transposes,
+              known_ragas =  known_ragas,
+              unknown_ragas = unknown_ragas,
+              main_shruthi = shruthi,
+              main_raga = raga)
 
 def _find_transposes(shruthi, raga):
   #find raga code
@@ -58,7 +64,7 @@ def _find_transposes(shruthi, raga):
   while shruthi != shruti_iterator[0]:
     shruti_iterator.rotate(1)
 
-  codes = [dict(shruthi = shruti_iterator[0], 
+  codes = [dict(shruthi = shruti_iterator[0],
                 raga_code = raga_code,
                 swara_code = swara_iterator[0]
                 )]
@@ -68,25 +74,44 @@ def _find_transposes(shruthi, raga):
   condition = True
   while condition:
       shruti_iterator.rotate(-1)
-      raga_iterator.rotate(-1)      
+      raga_iterator.rotate(-1)
       swara_iterator.rotate(1)
       new_raga_code = "".join(raga_iterator)
       # loop body here
       condition = new_raga_code != raga_code
-      if condition and raga_iterator[0] == "1":
+      if condition:
         codes.append(dict(shruthi = shruti_iterator[0],
                           raga_code = new_raga_code,
-                          swara_code = swara_iterator[0] 
-                          )) 
+                          swara_code = swara_iterator[0]
+                          ))
+
   for code in codes:
     if code["raga_code"] == raga_code:
-      code["raga"] = raga 
-    else: 
+      code["raga"] = raga
+    else:
       rg = __find_raga("raga_code", code["raga_code"])
       if rg:
         code["raga"] = rg["name"]
+      else:
+        code["raga"] = "Unknown"
+        code["unknown"] = True
+      code["swaras"] = __translate_to_swaras(code["raga_code"], code["swara_code"])
 
-  return [code for code in codes if code.has_key("raga")]
+  return codes
+
+def __translate_to_swaras(raga_code, swara_code):
+  raga_swaras = []
+  for index, value in enumerate(raga_code):
+    if value == "1":
+      raga_swaras.append(SWARAS[index])
+
+  if swara_code:
+    raga_swaras = deque(raga_swaras)
+    while(raga_swaras[0] != swara_code):
+      raga_swaras.rotate(-1)
+  return " ".join(raga_swaras)
+
+
 
 def __find_raga(key, value):
   for raga in RAGAS:
