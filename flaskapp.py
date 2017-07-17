@@ -36,7 +36,7 @@ def showShrutis():
 
 @app.route('/ragas',methods=['GET'])
 def showRagas():
-  return jsonify(sorted([raga["name"] for raga in RAGAS]))
+  return jsonify(sorted([raga["name"] for raga in RAGAS], key=lambda s: s.lower()))
 
 @app.route('/transposes',methods=['GET'])
 def showTransposes():
