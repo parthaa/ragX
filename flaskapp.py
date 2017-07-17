@@ -1,4 +1,5 @@
 import os
+import json
 from collections import deque
 from itertools import permutations
 from datetime import datetime
@@ -8,15 +9,18 @@ from flask import Flask, request, flash, url_for, redirect, \
 app = Flask(__name__)
 app.config.from_pyfile('flaskapp.cfg')
 
+RAGAS = []
 SHRUTHIS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-RAGAS = [["mohanam","101010010100"], 
-         ["madhyamavati", "101001010010"],
-         ["hindolam", "100101001010"],
-         ["shuddha saveri", "101001010100"],
-         ["shuddha dhanyasi", "100101010010" ] ]
 SWARAS = ["Sa", "Ri 1", "Ri 2", "Ga 1", "Ga 2", 
           "Ma 1", "Ma 2", "Pa", "Dha 1", "Dha 2", 
           "Ni 1", "Ni 2"]
+
+@app.before_first_request
+def setupRagas():
+  global RAGAS
+  with open('data/ragas.json') as json_data:
+    RAGAS = json.load(json_data)
+  return RAGAS
 
 @app.route('/')
 def index():
@@ -31,8 +35,8 @@ def showShrutis():
   return jsonify(SHRUTHIS)
 
 @app.route('/ragas',methods=['GET'])
-def showShruthis():
-  return jsonify([raga[0] for raga in RAGAS])
+def showRagas():
+  return jsonify(sorted([raga["name"] for raga in RAGAS]))
 
 @app.route('/transposes',methods=['GET'])
 def showTransposes():
@@ -48,7 +52,7 @@ def _formatted_transposes(shruthi, raga):
 
 def _find_transposes(shruthi, raga):
   #find raga code
-  raga_code = next(r[1] for r in RAGAS if r[0] == raga)
+  raga_code = __find_raga("name", raga)["raga_code"]
   swara_iterator = deque(SWARAS)
   shruti_iterator = deque(SHRUTHIS)
   while shruthi != shruti_iterator[0]:
@@ -75,12 +79,23 @@ def _find_transposes(shruthi, raga):
                           swara_code = swara_iterator[0] 
                           )) 
   for code in codes:
-    code["raga"] = next(r[0] for r in RAGAS if r[1] == code["raga_code"])
-  return codes
+    if code["raga_code"] == raga_code:
+      code["raga"] = raga 
+    else: 
+      rg = __find_raga("raga_code", code["raga_code"])
+      if rg:
+        code["raga"] = rg["name"]
+
+  return [code for code in codes if code.has_key("raga")]
+
+def __find_raga(key, value):
+  for raga in RAGAS:
+    if raga[key] == value:
+      return raga
 
 @app.route("/test")
 def test():
     return "<strong>It's Alive!</strong>"
 
 if __name__ == '__main__':
-    app.run()
+  app.run()
