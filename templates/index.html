@@ -9,17 +9,16 @@
 </head>
 <body ng-controller="RagXApp">
       <form role="form" ng-submit="getResults()">
-
         <div>
-          <h2> Select the Genre</h2>
-          <select name="genre" id="genre"
-            ng-options="option.name for option in availableGenres track by option.id"
-            ng-model="data.genre"></select>
-
           <h2> Select the base shruti </h2>
           <select name="shruti" id="shruthi"
             ng-options="option.name for option in availableShruthis track by option.id"
             ng-model="data.shruthi"></select>
+
+          <h2> Select the Genre</h2>
+          <select name="genre" id="genre"
+            ng-options="option.name for option in availableGenres track by option.id"
+            ng-model="data.genre"></select>
 
           <h2> Select the raga </h2>
           <select name="raga" id="raga"
