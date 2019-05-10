@@ -1,5 +1,5 @@
-import carnatic_ragas from './data/ragas.json';
-import hindustani_ragas from './data/hindustani_ragas.json';
+import carnatic_ragas from '../data/ragas.json';
+import hindustani_ragas from '../data/hindustani_ragas.json';
 
 carnatic_ragas.sort((a,b) => a.name.localeCompare(b.name))
 hindustani_ragas.sort((a,b) => a.name.localeCompare(b.name))

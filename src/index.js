@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Selector from './Selector'
+import Selector from './components/Selector'
+import Dashboard from './components/Dashboard';
+
+import {GENRES, SHRUTIS, RagaCalculator} from './utils/RagaCalculator';
 import './style.css';
-import {GENRES, SHRUTIS, RagaCalculator} from './RagaCalculator';
-import Dashboard from './Dashboard';
+
 class App extends Component {
   constructor() {
     super();
