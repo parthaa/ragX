@@ -3,13 +3,14 @@ import { render } from 'react-dom';
 import Selector from './Selector'
 import './style.css';
 import {GENRES, SHRUTIS, RagaCalculator} from './RagaCalculator';
+import Dashboard from './Dashboard';
 class App extends Component {
   constructor() {
     super();
     this.state = {
       raga: '',
       genre: 'Carnatic',
-      shruti: undefined
+      shruti: 'C'
     };
   }
 
@@ -24,6 +25,8 @@ class App extends Component {
     const ragas = ragaCalculator.fetchRagas();
     const shrutis = this.nameize(SHRUTIS)
     const genres = this.nameize(GENRES)
+
+    console.log(ragaCalculator.calculate());
     return (
       <div>
         <Selector title="Select the Base Shruti"
@@ -37,10 +40,9 @@ class App extends Component {
         <Selector title="Select the Raga"
                   items={ragas}
                   onSelection={(name) => this.setState({raga:name})} />
-        <p>
-          {this.state.raga.name}
 
-        </p>
+        <Dashboard transposes={ragaCalculator.calculate()} shruti={this.state.shruti} raga = {this.state.raga.name} />
+
       </div>
     );
   }

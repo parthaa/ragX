@@ -17,12 +17,12 @@ class RagaCalculator {
   rotateRight = (items) => [items[items.length - 1]].concat(items.slice(0, items.length-1))
   rotateLeft = (items) => items.slice(1, items.length).concat([items[0]])
 
-  find_raga = (key, value) => {
+  findRaga = (key, value) => {
     const ragas = this.fetchRagas();
     return ragas.find(item => item[key] === value)
   }
 
-  translate_to_swaras = (raga_code, swara_code) => {
+  translateToSwaras = (raga_code, swara_code) => {
     let raga_swaras = [];
     raga_code.split('').forEach((item, index) => {
       if (item === "1") {
@@ -39,8 +39,25 @@ class RagaCalculator {
     return raga_swaras.join(" ")
   }
 
+  calculate = () => {
+    const transposes = this.computeTransposes();
+    const unknownRagas = [];
+    const knownRagas = [];
+    transposes.forEach((item) => {
+      if(item.unknown) {
+        unknownRagas.push(item);
+      } else {
+        knownRagas.push(item);
+      }
+    });
 
-  calculate_transposes = () => {
+    return {
+      knownRagas: knownRagas,
+      unknownRagas: unknownRagas
+    }
+  }
+
+  computeTransposes = () => {
     const raga_code = this.state.raga.raga_code
     const shruti = this.state.shruti;
     if (raga_code === undefined || shruti === undefined) {
@@ -81,7 +98,7 @@ class RagaCalculator {
       if (code["raga_code"] === raga_code) {
         code["raga"] = this.state.raga.name;
       } else {
-        let rg = this.find_raga("raga_code", code["raga_code"])
+        let rg = this.findRaga("raga_code", code["raga_code"])
         if (rg) {
           code["raga"] = rg["name"]
         } else {
@@ -89,7 +106,7 @@ class RagaCalculator {
           code["unknown"] = true
         }
 
-        code["swaras"] = this.translate_to_swaras(code["raga_code"], code["swara_code"])
+        code["swaras"] = this.translateToSwaras(code["raga_code"], code["swara_code"])
       }
 
     });
