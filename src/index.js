@@ -26,7 +26,6 @@ class App extends Component {
     const shrutis = this.nameize(SHRUTIS)
     const genres = this.nameize(GENRES)
 
-    console.log(ragaCalculator.calculate());
     return (
       <div>
         <Selector title="Select the Base Shruti"
@@ -42,8 +41,8 @@ class App extends Component {
                   onSelection={(name) => this.setState({raga:name})} />
 
         <Dashboard transposes={ragaCalculator.calculate()}
-                    shruti={this.state.shruti} 
-                    raga = {this.state.raga.name} 
+                    shruti={this.state.shruti}
+                    raga = {this.state.raga.name}
                     swaras = {this.state.raga.swaras}/>
 
       </div>
