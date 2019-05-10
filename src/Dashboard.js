@@ -8,11 +8,18 @@ export default function(props) {
        <h2> Derived Transpose Patterns </h2>
         <span>
           <h3> Legend </h3>
-          <img src={piano} width="300px" height="100px"/>
+          <img src={piano} alt="Piano Legend" width="300px" height="100px"/>
         </span>
-        <RagaRenderer title={"Known Ragas"} shruti={props.shruti} raga={props.raga} ragas={props.transposes.knownRagas}/>
+        <RagaRenderer title={"Known Ragas"} 
+                      shruti={props.shruti} 
+                      raga={props.raga} 
+                      ragas={props.transposes.knownRagas}/>
         <hr/>
-        <RagaRenderer title={"Unnown Ragas"} shruti={props.shruti} raga={props.raga} ragas={props.transposes.unknownRagas}/>
+        <RagaRenderer title={"Unnown Ragas"} 
+                      unknown={true} 
+                      shruti={props.shruti} 
+                      raga={props.swaras} 
+                      ragas={props.transposes.unknownRagas}/>
     </div>
   );
 }

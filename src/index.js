@@ -41,7 +41,10 @@ class App extends Component {
                   items={ragas}
                   onSelection={(name) => this.setState({raga:name})} />
 
-        <Dashboard transposes={ragaCalculator.calculate()} shruti={this.state.shruti} raga = {this.state.raga.name} />
+        <Dashboard transposes={ragaCalculator.calculate()}
+                    shruti={this.state.shruti} 
+                    raga = {this.state.raga.name} 
+                    swaras = {this.state.raga.swaras}/>
 
       </div>
     );

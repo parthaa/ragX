@@ -13,10 +13,18 @@ const showSpan = (item, props) => {
   return "";
 }
 
+const findTitle = (item, props) => {
+  if (props.unknown) {
+    return `${item.shruti} - ${item.swaras}`
+  } else {
+    return `${item.shruti} - ${item.raga}`    
+  }
+}
+
 export default function(props) {
-  const raga_render = props.ragas.map((item, index) => {
+  const ragaRenderer = props.ragas.map((item, index) => {
     return (
-      <li key={index}><strong>{item.shruti} - {item.raga} </strong>
+      <li key={index}><strong>{findTitle(item, props)} </strong>
         { showSpan(item, props)}
       </li>
     )
@@ -26,7 +34,7 @@ export default function(props) {
     <div className="notations">
             <span><h3> {props.title} </h3></span>
              <ol>
-              {raga_render.length > 0 ? raga_render: "No results found"}
+              {ragaRenderer.length > 0 ? ragaRenderer: "No results found"}
             </ol>
     </div>
   );
