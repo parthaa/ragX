@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/ragX/static/js/runtime~main.c385b65b.js"
   },
   {
-    "revision": "71f0db1a2ab0b7c47b39",
-    "url": "/ragX/static/js/main.3f204e81.chunk.js"
+    "revision": "a7c42773dfb3bea6edfe",
+    "url": "/ragX/static/js/main.e5dbf9ea.chunk.js"
   },
   {
-    "revision": "0d23b7226418724426a0",
-    "url": "/ragX/static/js/2.6a509999.chunk.js"
+    "revision": "d35ca1a10f53dee7a763",
+    "url": "/ragX/static/js/2.e78bedfd.chunk.js"
   },
   {
-    "revision": "71f0db1a2ab0b7c47b39",
+    "revision": "a7c42773dfb3bea6edfe",
     "url": "/ragX/static/css/main.fbe9cfb5.chunk.css"
   },
   {
-    "revision": "fc35f763ec5865a8719cd05de5aa2e53",
+    "revision": "c2bc91986b8334bc7210883bc1ee2c1d",
     "url": "/ragX/index.html"
   }
 ];
